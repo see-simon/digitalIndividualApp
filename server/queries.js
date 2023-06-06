@@ -18,9 +18,9 @@ const getUsers = (request, response) => {
   }
 
   const getUserById = (request, response) => {
-    const id = parseInt(request.params.id)
+    const id = parseInt(request.params.ordernumber)
   
-    pool.query('SELECT * FROM registration WHERE ordernumber = $1', [id], (error, results) => {
+    pool.query('SELECT * FROM registration WHERE ordernumber = $1', [ordernumber], (error, results) => {
       if (error) {
         throw error
       }
@@ -29,9 +29,9 @@ const getUsers = (request, response) => {
   }
 
   const createUser = (request, response) => {
-    const { fiestname, lastname, email, password } = request.body
+    const { ordernumber, fiestname, lastname, email } = request.body
   
-    pool.query('INSERT INTO registration (fiestname,lastname, email, password) VALUES (mpelemane, thobejane, sea6580@gmail.com, 12345) RETURNING *', [fiestname, lastname, email, password], (error, results) => {
+    pool.query('INSERT INTO registration (ordernumber, fiestname, lastname, email) VALUES ( 1,mpelemane, thobejane, sea6580@gmail.com) RETURNING *', [ordernumber, fiestname, lastname, email], (error, results) => {
       if (error) {
         throw error
       }
@@ -41,11 +41,11 @@ const getUsers = (request, response) => {
 
   const updateUser = (request, response) => {
     const id = parseInt(request.params.id)
-    const { fiestname, lastname, email, password } = request.body
+    const { ordernumber, fiestname, lastname, email } = request.body
   
     pool.query(
       'UPDATE registration SET fiestname = thabo, email = thabo@gmail.com WHERE ordernumber = $1',
-      [fiestname, lastname, email, password, id],
+      [ordernumber, fiestname, lastname, email, id],
       (error, results) => {
         if (error) {
           throw error
