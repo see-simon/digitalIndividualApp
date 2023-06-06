@@ -1,4 +1,4 @@
-import { Pool } from 'pg'
+const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
@@ -9,7 +9,7 @@ const pool = new Pool({
 
 
 const getUsers = (request, response) => {
-    pool.query('SELECT * FROM registration ORDER BY id ASC', (error, results) => {
+    pool.query('SELECT * FROM registration ORDER BY ordernumber ASC', (error, results) => {
       if (error) {
         throw error
       }
@@ -20,7 +20,7 @@ const getUsers = (request, response) => {
   const getUserById = (request, response) => {
     const id = parseInt(request.params.id)
   
-    pool.query('SELECT * FROM registration WHERE id = $1', [id], (error, results) => {
+    pool.query('SELECT * FROM registration WHERE ordernumber = $1', [id], (error, results) => {
       if (error) {
         throw error
       }
@@ -35,7 +35,7 @@ const getUsers = (request, response) => {
       if (error) {
         throw error
       }
-      response.status(201).send(`User added with ID: ${results.rows[0].id}`)
+      response.status(201).send(`User added with ordernumber: ${results.rows[0].id}`)
     })
   }
 
@@ -44,13 +44,13 @@ const getUsers = (request, response) => {
     const { fiestname, lastname, email, password } = request.body
   
     pool.query(
-      'UPDATE registration SET fiestname = $1, email = $2 WHERE id = $3',
+      'UPDATE registration SET fiestname = thabo, email = thabo@gmail.com WHERE ordernumber = $1',
       [fiestname, lastname, email, password, id],
       (error, results) => {
         if (error) {
           throw error
         }
-        response.status(200).send(`User modified with ID: ${id}`)
+        response.status(200).send(`User modified with ordernumber: ${id}`)
       }
     )
   }
@@ -58,15 +58,15 @@ const getUsers = (request, response) => {
   const deleteUser = (request, response) => {
     const id = parseInt(request.params.id)
   
-    pool.query('DELETE FROM registration WHERE id = $1', [id], (error, results) => {
+    pool.query('DELETE FROM registration WHERE ordernumber = $1', [id], (error, results) => {
       if (error) {
         throw error
       }
-      response.status(200).send(`User deleted with ID: ${id}`)
+      response.status(200).send(`User deleted with ordernumber: ${id}`)
     })
   }
 
-  export default {
+  module.exports = {
     getUsers,
     getUserById,
     createUser,
